@@ -1,1 +1,42 @@
+#include <iostream>
+#include <fstream> 
+#include <ctime>  
+#include <string>
 
+using namespace std;
+
+
+string obtenerMarcaDeTiempo() {
+    time_t ahora = time(0);
+    char buffer[80];
+    strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S", localtime(&ahora));
+    return string(buffer);
+}
+
+int main() {
+    float num1, num2, suma;
+
+    // 1. Pedir los números
+    cout << "Ingresa el primer numero: ";
+    cin >> num1;
+    cout << "Ingresa el segundo numero: ";
+    cin >> num2;
+
+    // 2. Realizar la operación
+    suma = num1 + num2;
+    cout << "El resultado es: " << suma << endl;
+
+    // 3. Hacer el  log
+    ofstream archivoLog;
+    // Abrir en modo app 
+    archivoLog.open("log.txt", ios::app); 
+
+    if (archivoLog.is_open()) {
+        archivoLog << "[" << obtenerMarcaDeTiempo() << "] ";
+        archivoLog << "Suma: " << num1 << " + " << num2 << " = " << suma << endl;
+        archivoLog.close();
+        cout << "Operacion guardada en log.txt" << endl;
+    } else {
+        cout << "Error al abrir el archivo de log." << endl;
+    }
+}
